@@ -25,6 +25,16 @@ public class IntentReaderActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_intent_reader);
+		Intent intent = getIntent();
+		text = intent.getStringExtra(TEXT_KEY);
+		mode = intent.getIntExtra(TRANSFORM_KEY, NORMAL);
+		text = transformText(text);
+		TextView widget = (TextView) findViewById(R.id.intentText);
+		widget.setText(text);
+		if (text == null) {
+			widget.setText("this is the default message");
+		}
+
 	}
 	
 	public String transformText(String text) {
@@ -43,3 +53,5 @@ public class IntentReaderActivity extends Activity {
 		return text;
 	}
 }
+
+

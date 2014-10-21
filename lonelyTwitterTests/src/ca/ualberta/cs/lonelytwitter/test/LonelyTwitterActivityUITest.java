@@ -1,5 +1,7 @@
 package ca.ualberta.cs.lonelytwitter.test;
 
+import java.util.Date;
+
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
@@ -8,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import ca.ualberta.cs.lonelytwitter.LonelyTweetModel;
 import ca.ualberta.cs.lonelytwitter.LonelyTwitterActivity;
 import ca.ualberta.cs.lonelytwitter.NormalTweetModel;
 
@@ -43,4 +46,28 @@ public class LonelyTwitterActivityUITest extends
 		textInput.setText(text);
 		((Button) activity.findViewById(ca.ualberta.cs.lonelytwitter.R.id.save)).performClick();
 	}
+	
+	public void testAddTweet() throws Throwable {
+
+		runTestOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				LonelyTwitterActivity activity = (LonelyTwitterActivity) getActivity();
+				ListView listView = (ListView) activity.findViewById(ca.ualberta.cs.lonelytwitter.R.id.oldTweetsList);
+				NormalTweetModel tweet = new NormalTweetModel("testing");
+				int countBefore = listView.getAdapter().getCount();
+				activity.addTweet(tweet);
+				int countAfter = listView.getAdapter().getCount();
+				assertTrue(countAfter > countBefore);
+				NormalTweetModel ntm = (NormalTweetModel) listView.getAdapter().getItem(countAfter-1);
+				assertEquals(tweet, ntm);
+				
+				assertEquals("testing", ntm.getText());
+			}
+		});
+
+	}
 }
+
+
